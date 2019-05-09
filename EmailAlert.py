@@ -21,6 +21,7 @@ class EmailAlert(object):
             with open(attachment, 'rb') as file:
                 file_data = file.read()
                 file_name = file.name
+                print(file_name)
             self.msg_creator.add_attachment(file_data, maintype='application',
                                             subtype='octet-stream', filename=file_name)
         with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp:

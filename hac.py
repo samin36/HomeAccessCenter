@@ -107,7 +107,7 @@ class HAC(object):
             return Image.open(img_to_open)
 
     def path_of_grades(self):
-        download_dir = r"C:\Users\Shrey\Downloads"
+        download_dir = '.'
         for file in os.listdir(download_dir):
             if "grades" in file:
                 return os.path.join(download_dir, file)
@@ -119,7 +119,7 @@ class HAC(object):
         # message = input("What is the message\n")
         subject = "HAC Grades"
         message = "Gungun"
-        email_sender = EmailAlert("shreyamin75@gmail.com", subject, message)
+        email_sender = EmailAlert("netraamin13@gmail.com", subject, message)
         return email_sender.send_email(self.path_of_grades())
 
     def delete_file(self):
