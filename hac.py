@@ -1,4 +1,7 @@
 from selenium import webdriver
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as EC
 import config
 import os
 from EmailAlert import EmailAlert
@@ -10,13 +13,13 @@ from PIL import Image
 class HAC(object):
     def __init__(self):
         self.options = webdriver.ChromeOptions()
-        self.options.add_argument('--start-fullscreen')
+        # self.options.add_argument('--start-fullscreen')
         self.options.add_argument('disable-infobars')
-        # self.options.add_argument('--kiosk-printing')
-        # self.options.add_argument('--headless')
-        self.options.add_experimental_option("prefs", config.chrome_profile)
+        # # self.options.add_argument('--kiosk-printing')
+        self.options.add_argument('--window-size=2560,1440')
+        self.options.add_argument('--headless')
+        # self.options.add_experimental_option("prefs", config.chrome_profile)
         self.driver = webdriver.Chrome('../chromedriver', options=self.options)
-        self.driver.maximize_window()
         self.driver.get(config.login_info.get('url'))
         self.driver.implicitly_wait(15)
         Image.init()
@@ -38,6 +41,7 @@ class HAC(object):
         frame = self.driver.find_element_by_xpath(
             '//*[@id="sg-legacy-iframe"]')
         self.driver.switch_to.frame(frame)
+
         # # click dropdown for runs to make the elements in the dropdown visible
         # dropdown_btn = self.driver.find_element_by_xpath(
         #     '//*[@id="combobox_plnMain_ddlReportCardRuns"]/a')
@@ -56,7 +60,7 @@ class HAC(object):
         #     '//*[@id="plnMain_btnRefreshView"]')
         # refresh_view.click()
 
-        ### Continue button if need to select quarter 4
+        # Continue button if need to select quarter 4
         # continue_btn = self.driver.find_element_by_xpath(
         #     '//*[@id="plnMain_btnContinue"]')
         # continue_btn.click()
@@ -65,19 +69,21 @@ class HAC(object):
         full_view.click()
 
         # Loop through all the assignments and take screenshots
-        assignments = self.driver.find_elements_by_class_name('AssignmentClass')
+        assignments = self.driver.find_elements_by_class_name(
+            'AssignmentClass')
         file_names = []
         for index, assignment in enumerate(assignments):
             name = assignment.find_element_by_class_name(
                 'sg-header-heading').text
-            #The math class has '/' which causes an error in saving the image
-            name = name.replace('/','_')
+            # The math class has '/' which causes an error in saving the image
+            name = name.replace('/', '_')
 
-            #If physical science, then zoom out
+            # If physical science, then zoom out
             if 'Physical Science' in name:
-                self.driver.execute_script("document.body.style.zoom='94%'")
+                self.driver.execute_script("document.body.style.zoom='98%'")
             else:
                 self.driver.execute_script("document.body.style.zoom='100%'")
+
             file_names.insert(index, name)
             file_names[index] += '.png'
             assignment.screenshot(file_names[index])
@@ -90,9 +96,6 @@ class HAC(object):
         image_list = [self.open_image(img) for img in file_names]
         image_list[1].save(pdf_name, "PDF", resolution=100.0, save_all=True,
                            append_images=image_list)
-
-
-
 
         self.driver.switch_to.default_content()
         # self.driver.quit()
@@ -113,17 +116,18 @@ class HAC(object):
                 return os.path.join(download_dir, file)
 
     def send_grades(self):
-        # receiver = input("Who do you want to email to?\n")
-        # receiver = receiver.strip()
+        receiver = input("Who do you want to email to?\n")
+        receiver = receiver.strip()
         # subject = input("What is the subject?\n")
         # message = input("What is the message\n")
         subject = "HAC Grades"
         message = "Gungun"
-        email_sender = EmailAlert("netraamin13@gmail.com", subject, message)
+        email_sender = EmailAlert(receiver, subject, message)
         return email_sender.send_email(self.path_of_grades())
 
     def delete_file(self):
-        [os.remove(file) for file in os.listdir(".") if file.endswith('.png') or file.endswith('.pdf')]
+        [os.remove(file) for file in os.listdir(".")
+         if file.endswith('.png') or file.endswith('.pdf')]
 
 
 if __name__ == '__main__':
