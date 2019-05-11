@@ -9,7 +9,7 @@ SENDER_EMAIL = os.environ.get('PYTHON_PROJECTS_USERNAME')
 SENDER_PASSWORD = os.environ.get('PYTHON_PROJECTS_PASSWORD')
 
 
-class EmailAlert(object):
+class EmailAlert():
     def __init__(self, receiver, subject, message):
         """
         intializes the email message with subject, from, to, and the message

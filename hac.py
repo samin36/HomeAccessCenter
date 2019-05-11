@@ -1,13 +1,15 @@
+#!/usr/bin/env python3
 from selenium import webdriver
 import config
 import os
+import sys
 from EmailAlert import EmailAlert
 import img2pdf
 from datetime import date
 from PIL import Image
 
 
-class HAC(object):
+class HAC():
     def __init__(self):
         """
         initalizes the webdriver
@@ -16,8 +18,8 @@ class HAC(object):
         # self.options.add_argument('--start-fullscreen')
         self.options.add_argument('disable-infobars')
         self.options.add_argument('--window-size=2560,1440')
-        self.options.add_argument('--headless')
-        self.driver = webdriver.Chrome('../chromedriver', options=self.options)
+        # self.options.add_argument('--headless')
+        self.driver = webdriver.Chrome(options=self.options)
         self.driver.get(config.login_info.get('url'))
         self.driver.implicitly_wait(15)
         Image.init()
@@ -101,9 +103,9 @@ class HAC(object):
     def open_image(self, img_to_open):
         img = Image.open(img_to_open)
         if (img.mode == "RGBA"):
-            ##Since the PIL Image library only accepts RBG images, must make a
-            ##blank image and copy over the old image to the new one with RGB
-            ##mode
+            # Since the PIL Image library only accepts RBG images, must make a
+            # blank image and copy over the old image to the new one with RGB
+            # mode
             rgb = Image.new('RGB', img.size, (255, 255, 255))
             rgb.paste(img, mask=img.split()[3])
             return rgb
@@ -131,12 +133,14 @@ class HAC(object):
         function which handles sending the grades. it uses the EmailAlert.py
         file
         """
-        receiver = input("Who do you want to email to?\n")
+        # receiver = input("Who do you want to email to?\n")
+        receiver = "netraamin13@gmail.com"
         receiver = receiver.strip()
         subject = "HAC Grades"
         message = f"HAC Grades for {str(date.today())}"
         email_sender = EmailAlert(receiver, subject, message)
-        send_what = input("PDF or PNGS?\n")
+        # send_what = input("PDF or PNGS?\n")
+        send_what = "PDF"
         if "PDF" in send_what:
             return email_sender.send_email(self.path_of_grades_pdf())
         elif "PNGS" in send_what:
