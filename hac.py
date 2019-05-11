@@ -18,7 +18,7 @@ class HAC():
         # self.options.add_argument('--start-fullscreen')
         self.options.add_argument('disable-infobars')
         self.options.add_argument('--window-size=2560,1440')
-        # self.options.add_argument('--headless')
+        self.options.add_argument('--headless')
         self.driver = webdriver.Chrome(options=self.options)
         self.driver.get(config.login_info.get('url'))
         self.driver.implicitly_wait(15)
