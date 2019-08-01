@@ -45,29 +45,6 @@ class HAC():
             '//*[@id="sg-legacy-iframe"]')
         self.driver.switch_to.frame(frame)
 
-        # # click dropdown for runs to make the elements in the dropdown visible
-        # dropdown_btn = self.driver.find_element_by_xpath(
-        #     '//*[@id="combobox_plnMain_ddlReportCardRuns"]/a')
-        # dropdown_btn.click()
-
-        # # Gets a list of elements with class as 'ui-menu-item'. Since we want
-        # # fourth quarter, it corresponds to index 3.
-        # all_runs = self.driver.find_elements_by_xpath(
-        #     '//*[@class="ui-menu-item"]/a')
-        # for index, runs in enumerate(all_runs):
-        #     print(index, runs.text)
-        # fourth_quarter = all_runs[0]
-        # fourth_quarter.click()
-
-        # refresh_view = self.driver.find_element_by_xpath(
-        #     '//*[@id="plnMain_btnRefreshView"]')
-        # refresh_view.click()
-
-        # Continue button if need to select quarter 4
-        # continue_btn = self.driver.find_element_by_xpath(
-        #     '//*[@id="plnMain_btnContinue"]')
-        # continue_btn.click()
-
         full_view = self.driver.find_element_by_xpath('//*[@id="btnView"]')
         full_view.click()
 
@@ -133,8 +110,7 @@ class HAC():
         function which handles sending the grades. it uses the EmailAlert.py
         file
         """
-        # receiver = input("Who do you want to email to?\n")
-        receiver = "netraamin13@gmail.com"
+        receiver = input("Who do you want to email to?\n")
         receiver = receiver.strip()
         subject = "HAC Grades"
         message = f"HAC Grades for {str(date.today())}"
