@@ -5,8 +5,8 @@ import smtplib
 import imghdr
 from email.message import EmailMessage
 
-SENDER_EMAIL = os.environ.get('PYTHON_PROJECTS_USERNAME')
-SENDER_PASSWORD = os.environ.get('PYTHON_PROJECTS_PASSWORD')
+SENDER_EMAIL = username
+SENDER_PASSWORD = password
 
 
 class EmailAlert():
